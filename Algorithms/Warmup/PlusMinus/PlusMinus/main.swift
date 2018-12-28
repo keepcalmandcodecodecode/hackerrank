@@ -23,15 +23,12 @@ func plusMinus(arr: [Int]) -> Void {
             zerosCount = zerosCount + 1
         }
     }
-    let positivesFraction = Float(positivesCount)/Float(count)
-    let negativesFraction = Float(negativesCount)/Float(count)
-    let zerosFraction = Float(zerosCount)/Float(count)
-    let positivesFractionString = String(format: "%.6f", positivesFraction)
-    let negativesFractionString = String(format: "%.6f", negativesFraction)
-    let zerosFractionString = String(format: "%.6f", zerosFraction)
-    print("\(positivesFractionString)")
-    print("\(negativesFractionString)")
-    print("\(zerosFractionString)")
+    let array = [positivesCount,negativesCount,zerosCount]
+        .map { item in Float(item)/Float(count)}
+        .map { item in String(format: "%.6f", item)}
+    for item in array {
+        print(item)
+    }
 }
 
 guard let n = Int((readLine()?.trimmingCharacters(in: .whitespacesAndNewlines))!)
@@ -47,4 +44,3 @@ let arr: [Int] = arrTemp.split(separator: " ").map {
 guard arr.count == n else { fatalError("Bad input") }
 
 plusMinus(arr: arr)
-
