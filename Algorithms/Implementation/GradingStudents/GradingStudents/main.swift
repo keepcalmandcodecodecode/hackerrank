@@ -26,8 +26,6 @@ func gradingStudents(grades: [Int]) -> [Int] {
     return resultGrades
 }
 
-print(gradingStudents(grades: [73,67,38,33]))
-
 let fileName = ProcessInfo.processInfo.environment["OUTPUT_PATH"]!
 FileManager.default.createFile(atPath: fileName, contents: nil, attributes: nil)
 let fileHandle = FileHandle(forWritingAtPath: fileName)!
