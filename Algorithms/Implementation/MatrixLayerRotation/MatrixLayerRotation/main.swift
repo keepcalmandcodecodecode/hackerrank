@@ -8,44 +8,40 @@
 
 import Foundation
 
-func rotateMatrixLayer(matrix: [[Int]], indexOfLayer: Int) -> [[Int]] {
-    var rotatedMatrix = matrix
-    
-    let firstRowIndex = indexOfLayer
-    let lastRowIndex = rotatedMatrix.count - indexOfLayer - 1
-    if firstRowIndex > lastRowIndex {
-        return matrix
-    }
-    let firstColumnIndex = indexOfLayer
-    let lastColumnIndex = rotatedMatrix[indexOfLayer].count - indexOfLayer - 1
-    if firstColumnIndex > lastColumnIndex {
-        return matrix
-    }
-    
-    //first column, last column
-    for i in firstRowIndex..<lastRowIndex {
-        rotatedMatrix[i+1][firstColumnIndex] = matrix[i][firstColumnIndex]
-        rotatedMatrix[i][lastColumnIndex] = matrix[i+1][lastColumnIndex]
-    }
-    rotatedMatrix[firstRowIndex][firstColumnIndex] = matrix[firstRowIndex][firstColumnIndex+1]
-    rotatedMatrix[lastRowIndex][lastColumnIndex] = matrix[lastRowIndex][lastColumnIndex-1]
-    //first row, last row
-    for i in firstColumnIndex..<lastColumnIndex {
-        rotatedMatrix[firstRowIndex][i] = matrix[firstRowIndex][i+1]
-        rotatedMatrix[lastRowIndex][i+1] = matrix[lastRowIndex][i]
-    }
-    rotatedMatrix[firstRowIndex][lastColumnIndex] = matrix[firstRowIndex+1][lastColumnIndex]
-    rotatedMatrix[lastRowIndex][firstColumnIndex] = matrix[lastRowIndex-1][firstColumnIndex]
-    
-    return rotatedMatrix
-}
-
 func matrixRotation(matrix: [[Int]], r: Int) -> Void {
     var rotatedMatrix = matrix
     let countOfLayers = matrix.count / 2
     for indexOfLayer in 0..<countOfLayers {
-        for _ in 0..<r {
-            rotatedMatrix = rotateMatrixLayer(matrix: rotatedMatrix, indexOfLayer: indexOfLayer)
+        let firstRowIndex = indexOfLayer
+        let lastRowIndex = rotatedMatrix.count - indexOfLayer - 1
+        if firstRowIndex > lastRowIndex {
+            continue
+        }
+        let firstColumnIndex = indexOfLayer
+        let lastColumnIndex = rotatedMatrix[indexOfLayer].count - indexOfLayer - 1
+        if firstColumnIndex > lastColumnIndex {
+            continue
+        }
+        
+        let truncatedR = r%((lastRowIndex - firstRowIndex - 1)*2+(lastColumnIndex-firstColumnIndex+1)*2)
+        
+        for _ in 0..<truncatedR {
+            var sourceMatrix = rotatedMatrix
+            
+            //first column, last column
+            for i in firstRowIndex..<lastRowIndex {
+                rotatedMatrix[i+1][firstColumnIndex] = sourceMatrix[i][firstColumnIndex]
+                rotatedMatrix[i][lastColumnIndex] = sourceMatrix[i+1][lastColumnIndex]
+            }
+            rotatedMatrix[firstRowIndex][firstColumnIndex] = sourceMatrix[firstRowIndex][firstColumnIndex+1]
+            rotatedMatrix[lastRowIndex][lastColumnIndex] = sourceMatrix[lastRowIndex][lastColumnIndex-1]
+            //first row, last row
+            for i in firstColumnIndex..<lastColumnIndex {
+                rotatedMatrix[firstRowIndex][i] = sourceMatrix[firstRowIndex][i+1]
+                rotatedMatrix[lastRowIndex][i+1] = sourceMatrix[lastRowIndex][i]
+            }
+            rotatedMatrix[firstRowIndex][lastColumnIndex] = sourceMatrix[firstRowIndex+1][lastColumnIndex]
+            rotatedMatrix[lastRowIndex][firstColumnIndex] = sourceMatrix[lastRowIndex-1][firstColumnIndex]
         }
     }
     for itemArray in rotatedMatrix {
@@ -55,6 +51,8 @@ func matrixRotation(matrix: [[Int]], r: Int) -> Void {
         print("")
     }
 }
+
+matrixRotation(matrix: [[1, 2, 3, 4],[5,6,7,8],[9,10,11,12],[13,14,15,16]], r: 10000000)
 
 guard let mnrTemp = readLine()?.replacingOccurrences(of: "\\s+$", with: "", options: .regularExpression) else { fatalError("Bad input") }
 let mnr = mnrTemp.split(separator: " ").map{ String($0) }
