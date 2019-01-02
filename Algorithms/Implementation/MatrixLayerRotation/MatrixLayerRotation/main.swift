@@ -13,8 +13,14 @@ func rotateMatrixLayer(matrix: [[Int]], indexOfLayer: Int) -> [[Int]] {
     
     let firstRowIndex = indexOfLayer
     let lastRowIndex = rotatedMatrix.count - indexOfLayer - 1
+    if firstRowIndex > lastRowIndex {
+        return matrix
+    }
     let firstColumnIndex = indexOfLayer
     let lastColumnIndex = rotatedMatrix[indexOfLayer].count - indexOfLayer - 1
+    if firstColumnIndex > lastColumnIndex {
+        return matrix
+    }
     
     //first column, last column
     for i in firstRowIndex..<lastRowIndex {
