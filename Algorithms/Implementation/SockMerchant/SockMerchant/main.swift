@@ -13,7 +13,7 @@ func sockMerchant(n: Int, ar: [Int]) -> Int {
     var uniqueSocks:[Int:Int] = [:]
     var pairsCount = 0
     for sock in ar {
-        if let alreadyHas = uniqueSocks[sock] {
+        if uniqueSocks[sock] != nil {
             uniqueSocks.removeValue(forKey: sock)
             pairsCount = pairsCount + 1
         } else {
